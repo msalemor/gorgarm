@@ -21,7 +21,7 @@ const (
 
 	deploymentName = "VMDeployQuickstart"
 	templateFile   = "template1.json"
-	parametersFile = "parameters1.json"
+	parametersFile = "parameters1.json" // not used in this example
 )
 
 // Information loaded from the authorization file to identify the client
