@@ -50,11 +50,11 @@ func init() {
 }
 
 func main() {
-	group, err := createGroup()
-	if err != nil {
-		log.Fatalf("failed to create group: %v", err)
-	}
-	log.Printf("Created group: %v", *group.Name)
+	//group, err := createGroup()
+	//if err != nil {
+	//	log.Fatalf("failed to create group: %v", err)
+	//}
+	//log.Printf("Created group: %v", *group.Name)
 
 	log.Printf("Starting deployment: %s", deploymentName)
 	result, err := createDeployment()
