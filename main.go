@@ -7,21 +7,18 @@ import (
 	"log"
 	"os"
 
-	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2017-09-01/network"
 	"github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2018-05-01/resources"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/azure/auth"
-	"github.com/Azure/go-autorest/autorest/to"
 )
 
 const (
 	resourceGroupName     = "GoVMQuickstart"
 	resourceGroupLocation = "eastus"
-
-	deploymentName = "VMDeployQuickstart"
-	templateFile   = "template1.json"
-	parametersFile = "parameters1.json" // not used in this example
+	deploymentName        = "VMDeployQuickstart"
+	templateFile          = "template1.json"
+	parametersFile        = "parameters1.json" // not used in this example
 )
 
 // Information loaded from the authorization file to identify the client
@@ -50,12 +47,6 @@ func init() {
 }
 
 func main() {
-	//group, err := createGroup()
-	//if err != nil {
-	//	log.Fatalf("failed to create group: %v", err)
-	//}
-	//log.Printf("Created group: %v", *group.Name)
-
 	log.Printf("Starting deployment: %s", deploymentName)
 	result, err := createDeployment()
 	if err != nil {
@@ -66,19 +57,6 @@ func main() {
 	} else {
 		log.Printf("Completed deployment %v (no data returned to SDK)", deploymentName)
 	}
-	getLogin()
-}
-
-// Create a resource group for the deployment.
-func createGroup() (group resources.Group, err error) {
-	groupsClient := resources.NewGroupsClient(clientData.SubscriptionID)
-	groupsClient.Authorizer = authorizer
-
-	return groupsClient.CreateOrUpdate(
-		ctx,
-		resourceGroupName,
-		resources.Group{
-			Location: to.StringPtr(resourceGroupLocation)})
 }
 
 // Create the deployment
@@ -120,29 +98,6 @@ func createDeployment() (deployment resources.DeploymentExtended, err error) {
 		return
 	}
 	return deploymentFuture.Result(deploymentsClient)
-}
-
-// Get login information by querying the deployed public IP resource.
-func getLogin() {
-	params, err := readJSON(parametersFile)
-	if err != nil {
-		log.Fatalf("Unable to read parameters. Get login information with `az network public-ip list -g %s", resourceGroupName)
-	}
-
-	addressClient := network.NewPublicIPAddressesClient(clientData.SubscriptionID)
-	addressClient.Authorizer = authorizer
-	ipName := (*params)["publicIPAddresses_QuickstartVM_ip_name"].(map[string]interface{})
-	ipAddress, err := addressClient.Get(ctx, resourceGroupName, ipName["value"].(string), "")
-	if err != nil {
-		log.Fatalf("Unable to get IP information. Try using `az network public-ip list -g %s", resourceGroupName)
-	}
-
-	vmUser := (*params)["vm_user"].(map[string]interface{})
-
-	log.Printf("Log in with ssh: %s@%s, password: %s",
-		vmUser["value"].(string),
-		*ipAddress.PublicIPAddressPropertiesFormat.IPAddress,
-		clientData.VMPassword)
 }
 
 func readJSON(path string) (*map[string]interface{}, error) {
