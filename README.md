@@ -2,7 +2,7 @@
 
 This Go code deploys a Subscription scope ARM template
 
-# Requirements
+## Requirements
 
 - create a service principal and export it to a file using the Azure CLI (this can be done from the Cloud Shell in the portal)
 ```
@@ -20,3 +20,9 @@ export AZURE_AUTH_LOCATION=/user/home/go/azure.auth
 ```
 go run main.go
 ```
+
+## Reference
+
+This code comes mainly from:
+
+- https://docs.microsoft.com/en-us/go/azure/azure-sdk-go-qs-vm
