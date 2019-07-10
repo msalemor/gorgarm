@@ -1,6 +1,6 @@
 # Deploy a Subscription Scope Template in Azure using Go
 
-This Go code deploys a Subscription scope ARM template
+This Go code deploys a Subscription scope ARM template. This kind of template can create a resource group as well as resources.
 
 ## Requirements
 
